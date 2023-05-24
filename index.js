@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 
+
 inquirer
     .prompt([
         {
@@ -32,7 +33,7 @@ inquirer
         {
             type: 'input',
             message: 'Enter contributing information: ',
-            name: 'contributinInfo',
+            name: 'contributingInfo',
         },
         {
             type: 'input',
@@ -41,7 +42,53 @@ inquirer
         },
         {
             type: 'input',
-            message: 'Enter the questions content',
+            message: 'Enter the questions content: ',
             name: 'questions',
         },
-    ])
+    ]).then((userInput) => {
+        const answers = writeReadme(userInput.projectName, userInput.projectDescription, userInput.installationInfo, userInput.usageInfo, userInput.licence, userInput.contributingInfo, userInput.testInfo, userInput.questions);
+        fs.writeFile('README.md', answers, (err) => {
+            err ? console.log(err) : console.log('README generated succesfully');
+        })
+    })
+
+const writeReadme = (projectName, projectDescription, installationInfo, usageInfo, licence, contributingInfo, testInfo, questions) => 
+`# ${projectName}
+
+## Table of contents
+
+-[Description](<a>Description</a>)
+-[Description][]
+-[][]
+
+## Description
+
+${projectDescription}.
+
+## Installation
+
+${installationInfo}.
+
+## Usage 
+
+${usageInfo}.
+
+## Licence
+
+This repository is licenced under the ${licence} licence.
+
+## Contributing
+
+${contributingInfo}
+
+## Test 
+
+${testInfo}
+
+## Questions
+
+${questions}
+`
+;
+
+
